@@ -1,0 +1,5 @@
+all: huffman.c
+    cl huffman.c
+	
+clean:
+    del huffman.exe

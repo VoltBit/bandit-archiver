@@ -1,0 +1,19 @@
+Uncompressed:	10M
+Compression:	0:00.50 sec
+Compressed:	9,0K
+Decompression:	0:00.20 sec
+
+Uncompressed:	20M
+Compression:	0:01.30 sec
+Compressed:	13K
+Decompression:	0:00.44 sec
+
+Uncompressed:	100M
+Compression:	0:13.12 sec
+Compressed:	29K
+Decompression:	0:02.25 sec
+
+Uncompressed:	500M
+Compression:	2:25.92 sec
+Compressed:	64K
+Decompression:	0:12.53 sec

@@ -1,0 +1,43 @@
+CC = gcc
+CFLAGS = -Wno-discarded-qualifiers -Wno-unused-function -Wno-unused-but-set-variable -Wno-unused-variable -Wno-unused-parameter -fPIC -c -g -Wall -Wextra\
+-I/usr/lib/jvm/java-7-openjdk-amd64/include \
+-I/usr/lib/jvm/java-8-openjdk-amd64/include \
+-I/usr/lib/jvm/java-8-openjdk-amd64/include/linux \
+-I../LZW/
+
+ifeq ($(OS),Windows)
+	DEL = del
+else
+	DEL = rm
+endif
+
+build: java_setup libcompression.a
+
+java_setup:
+	javac CompressionLib.java
+	javah -jni CompressionLib
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
+
+libcompression.a: compression.o LZW.o io_manager.o
+	ar crv libcompression.a compression.o io_manager.o LZW.o
+	ranlib libcompression.a
+
+compression.o: compression.c ../LZW/LZW.h
+	$(CC) $(CFLAGS) compression.c -o $@
+
+LZW.o: ../LZW/LZW.c ../LZW/LZW.h
+	$(CC) $(CFLAGS) ../LZW/LZW.c -o $@
+
+io_manager.o:  ../LZW/bitfile.c ../LZW/bitfile.h
+	$(CC) $(CFLAGS) ../LZW/bitfile.c -o $@
+
+run-lzw:
+	echo > output_encode
+	java -Djava.library.path=. CompressionLib encode LZW ../input ../output_encode
+	java -Djava.library.path=. CompressionLib decode LZW ../output_encode ../output_decode
+	diff ../input ../output_decode
+
+clean:
+	$(DEL) *.class
+	$(DEL) *.so *.o *.a
+	$(DEL) exq_debug ../output_encode ../output_decode

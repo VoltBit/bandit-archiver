@@ -1,0 +1,6 @@
+all: huffman.c
+    gcc huffman.c -Werror -Wall -Wextra -o huffman
+	
+.PHONY: clean
+clean:
+    rm huffman

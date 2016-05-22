@@ -1,0 +1,5 @@
+all: LZW.c bitfile.c LZW.h bitfile.h debug.c
+	cl LZW.c bitfile.c debug.c /out:lzw
+
+clean:
+	del lzw
